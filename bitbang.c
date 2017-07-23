@@ -73,8 +73,20 @@ void
 bitbang_init(IOCtrl *ctrl)
 {
 	ctrl->setpin(ctrl, PIN_SCK, 0);
+	ctrl->setpin(ctrl, PIN_SS, 1);
 }
 
+void
+bitbang_begin(IOCtrl *ctrl)
+{
+	ctrl->setpin(ctrl, PIN_SS, 0);
+}
+
+void
+bitbang_end(IOCtrl *ctrl)
+{
+	ctrl->setpin(ctrl, PIN_SS, 1);
+}
 
 /*
  * transmit an AVR device command and return the results; 'cmd' and

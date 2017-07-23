@@ -16,5 +16,8 @@ test: test.o
 format: $(SRC) $(DEPS)
 	astyle $^ --style=bsd --indent=tab
 
+install: libbangio.so
+	cp $^ /usr/lib/
+
 clean:
 	rm -f *.so *.o *~ *.c.orig *.orig ./test

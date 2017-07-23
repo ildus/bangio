@@ -270,12 +270,12 @@ static void linuxgpio_close(IOCtrl *ctrl)
 	}
 }
 
-void linuxgpio_init(IOCtrl *ctrl)
+void linuxgpio_init(IOCtrl *ctrl, enum PINFUNC *pinno)
 {
-	ctrl->pinno[PIN_SCK]		= 11;
-	ctrl->pinno[PIN_MISO]		= 9;
-	ctrl->pinno[PIN_MOSI]		= 10;
+	memcpy(ctrl->pinno, pinno, sizeof(enum PINFUNC) * N_PINS);
 	ctrl->cmd			= bitbang_cmd;
+	ctrl->begin			= bitbang_begin;
+	ctrl->end			= bitbang_end;
 	ctrl->open			= linuxgpio_open;
 	ctrl->close			= linuxgpio_close;
 	ctrl->setpin		= linuxgpio_setpin;
