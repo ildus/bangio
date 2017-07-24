@@ -12,8 +12,12 @@ include_directories(include)
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 # Install library
-install(TARGETS ${PROJECT_NAME} DESTINATION lib/${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 
 # Install library headers
 file(GLOB HEADERS include/lib${PROJECT_NAME}.h)
-install(FILES ${HEADERS} DESTINATION include/${PROJECT_NAME})
+install(FILES ${HEADERS} DESTINATION include)
+
+add_executable(test_spi test.c)
+target_link_libraries(test_spi -lbangio)
+
