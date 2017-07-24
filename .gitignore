@@ -54,3 +54,4 @@ dkms.conf
 tags
 .scons*
 /test
+/build

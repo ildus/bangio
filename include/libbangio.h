@@ -1,5 +1,5 @@
-#ifndef bitbang_h
-#define bitbang_h
+#ifndef libbangio_h
+#define libbangio_h
 
 enum PINFUNC
 {
@@ -24,9 +24,6 @@ typedef struct ioctrl_t
 	int  (*highpulsepin)	(struct ioctrl_t *ctrl, int pinfunc);
 } IOCtrl;
 
-int bitbang_cmd(IOCtrl *ctrl, const unsigned char *cmd, unsigned char *res);
-void bitbang_init(IOCtrl *ctrl);
-void bitbang_begin(IOCtrl *ctrl);
-void bitbang_end(IOCtrl *ctrl);
+void linuxgpio_init(IOCtrl *ctrl, enum PINFUNC *pinno);
 
 #endif

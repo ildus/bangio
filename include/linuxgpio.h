@@ -26,6 +26,5 @@
 #define PIN_INVERSE (~(PIN_MASK))	/* flag for inverted pin in serbb */
 #define PIN_MAX 20
 
-void linuxgpio_init(IOCtrl *ctrl, enum PINFUNC *pinno);
 
 #endif
