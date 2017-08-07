@@ -29,7 +29,11 @@ int main(void)
 	ctrl.open(&ctrl);
 	while (!stop)
 	{
+		printf("\ndata:\n");
 		ctrl.begin(&ctrl);
+		ctrl.cmd(&ctrl, buf, res);
+		for (int i=0; i < 4; i++)
+			printf("%d\n", res[i]);
 		ctrl.cmd(&ctrl, buf, res);
 		for (int i=0; i < 4; i++)
 			printf("%d\n", res[i]);
