@@ -1,2 +1,3 @@
-# usi_bitbang
-USI &lt;-> GPIO communcation using bit banging through /sys/class/gpio interface
+# bangio
+
+Used for bit banging devices through /sys/class/gpio interface. I use it to implement SPI protocol between Orange PI (Banana PI) and USI in `attiny24a`.
