@@ -20,10 +20,10 @@ int main(void)
 	IOCtrl ctrl;
 
 	signal(SIGINT, int_handler);
-	pinno[PIN_SCK] = 14;
-	pinno[PIN_MOSI] = 15;
-	pinno[PIN_MISO] = 16;
-	pinno[PIN_SS] = 10;
+	pinno[PIN_SCK] = 66;
+	pinno[PIN_MOSI] = 64;
+	pinno[PIN_MISO] = 65;
+	pinno[PIN_SS] = 68;
 
 	linuxgpio_init(&ctrl, pinno);
 	ctrl.open(&ctrl);
@@ -31,9 +31,9 @@ int main(void)
 	{
 		ctrl.begin(&ctrl);
 		ctrl.cmd(&ctrl, buf, res);
-		ctrl.end(&ctrl);
 		for (int i=0; i < 4; i++)
 			printf("%d\n", res[i]);
+		ctrl.end(&ctrl);
 		sleep(1);
 	}
 	ctrl.close(&ctrl);
