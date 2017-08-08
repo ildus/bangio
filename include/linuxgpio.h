@@ -22,9 +22,7 @@
 #include "limits.h"
 #include "bitbang.h"
 
-#define PIN_MASK    (UINT_MAX>>1)
-#define PIN_INVERSE (~(PIN_MASK))	/* flag for inverted pin in serbb */
-#define PIN_MAX 20
+#define PIN_MAX 255
 
 
 #endif

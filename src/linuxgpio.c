@@ -147,12 +147,6 @@ static int linuxgpio_setpin(IOCtrl *ctrl, int pinfunc, int value)
 	int r,
 	    pin = ctrl->pinno[pinfunc];
 
-	if (pin & PIN_INVERSE)
-	{
-		value  = !value;
-		pin   &= PIN_MASK;
-	}
-
 	if ( linuxgpio_fds[pin] < 0 )
 		return -1;
 
@@ -171,12 +165,6 @@ static int linuxgpio_getpin(IOCtrl * ctrl, int pinfunc)
 	unsigned char invert=0;
 	char c;
 	int pin = ctrl->pinno[pinfunc];
-
-	if (pin & PIN_INVERSE)
-	{
-		invert = 1;
-		pin   &= PIN_MASK;
-	}
 
 	if ( linuxgpio_fds[pin] < 0 )
 		return -1;
@@ -198,11 +186,6 @@ static int linuxgpio_getpin(IOCtrl * ctrl, int pinfunc)
 
 static int linuxgpio_highpulsepin(IOCtrl * ctrl, int pinfunc)
 {
-	int pin = ctrl->pinno[pinfunc];
-
-	if ( linuxgpio_fds[pin & PIN_MASK] < 0 )
-		return -1;
-
 	linuxgpio_setpin(ctrl, pinfunc, 1);
 	linuxgpio_setpin(ctrl, pinfunc, 0);
 
@@ -223,31 +206,25 @@ static int linuxgpio_open(IOCtrl *ctrl)
 	//that unwanted toggling of GPIO0 can occur and that other optional pins
 	//mostry LED status, can't be set to GPIO0. It can be fixed when a better
 	//solution exists.
-	for (i=0; i<N_PINS; i++)
+	for (i=0; i < N_PINS; i++)
 	{
-		if ( (ctrl->pinno[i] & PIN_MASK) != 0 ||
-		        i == PIN_SCK   ||
-		        i == PIN_MOSI  ||
-		        i == PIN_MISO )
+		pin = ctrl->pinno[i];
+		if ((r=linuxgpio_export(pin)) < 0)
 		{
-			pin = ctrl->pinno[i] & PIN_MASK;
-			if ((r=linuxgpio_export(pin)) < 0)
-			{
-				error(1, errno, "Can't export GPIO %d, already exported/busy?: %s",
-				      pin, strerror(errno));
-				return r;
-			}
-			if (i == PIN_MISO)
-				r=linuxgpio_dir_in(pin);
-			else
-				r=linuxgpio_dir_out(pin);
-
-			if (r < 0)
-				return r;
-
-			if ((linuxgpio_fds[pin]=linuxgpio_openfd(pin)) < 0)
-				return linuxgpio_fds[pin];
+			error(1, errno, "Can't export GPIO %d, already exported/busy?: %s",
+				  pin, strerror(errno));
+			return r;
 		}
+		if (i == PIN_MISO)
+			r=linuxgpio_dir_in(pin);
+		else
+			r=linuxgpio_dir_out(pin);
+
+		if (r < 0)
+			return r;
+
+		if ((linuxgpio_fds[pin]=linuxgpio_openfd(pin)) < 0)
+			return linuxgpio_fds[pin];
 	}
 
 	return(0);

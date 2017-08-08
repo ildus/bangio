@@ -1,3 +1,14 @@
 # bangio
 
-Uses /sys/class/gpio interface to bitbang some device.
+This library could be used for bit banging devices through `/sys/class/gpio` interface. I use it to implement SPI protocol between Orange PI (Banana PI) and USI in `attiny24a`.
+
+# Installation
+
+```
+make
+sudo make install
+```
+
+# Using
+
+Take a look at `test.c`.
