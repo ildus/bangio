@@ -5,6 +5,8 @@ This library could be used for bit banging devices through `/sys/class/gpio` int
 # Installation
 
 ```
+mkdir build && cd build
+cmake ..
 make
 sudo make install
 ```
