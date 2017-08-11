@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.4.0)
+cmake_minimum_required(VERSION 3.0.0)
 
 project(bangio)
 
 # Find source files
 file(GLOB SOURCES src/*.c)
+set(CMAKE_C_FLAGS "-Os -std=c11")
 
 # Include header files
 include_directories(include)

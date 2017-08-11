@@ -198,14 +198,7 @@ static int linuxgpio_open(IOCtrl *ctrl)
 
 	for (i=0; i<N_GPIO; i++)
 		linuxgpio_fds[i] = -1;
-	//Avrdude assumes that if a pin number is 0 it means not used/available
-	//this causes a problem because 0 is a valid GPIO number in Linux sysfs.
-	//To avoid annoying off by one pin numbering we assume SCK, MOSI, MISO
-	//and RESET pins are always defined in avrdude.conf, even as 0. If they're
-	//not programming will not work anyway. The drawbacks of this approach are
-	//that unwanted toggling of GPIO0 can occur and that other optional pins
-	//mostry LED status, can't be set to GPIO0. It can be fixed when a better
-	//solution exists.
+
 	for (i=0; i < N_PINS; i++)
 	{
 		pin = ctrl->pinno[i];
@@ -253,11 +246,11 @@ void linuxgpio_init(IOCtrl *ctrl, enum PINFUNC *pinno)
 	ctrl->cmd			= bitbang_cmd;
 	ctrl->begin			= bitbang_begin;
 	ctrl->end			= bitbang_end;
+	ctrl->init			= bitbang_init;
 	ctrl->open			= linuxgpio_open;
 	ctrl->close			= linuxgpio_close;
 	ctrl->setpin		= linuxgpio_setpin;
 	ctrl->getpin		= linuxgpio_getpin;
 	ctrl->highpulsepin	= linuxgpio_highpulsepin;
-
-	bitbang_init(ctrl);
+	ctrl->unexport		= linuxgpio_unexport;
 }
