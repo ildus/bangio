@@ -7,12 +7,18 @@ enum PINFUNC
 	PIN_MISO,
 	PIN_MOSI,
 	PIN_SS,
+	PIN_GPIO5,
+	//PIN_GPIO2,
+	//PIN_GPIO3,
+	//PIN_GPIO4,
 	N_PINS
 };
 
 typedef struct ioctrl_t
 {
 	enum PINFUNC pinno[N_PINS];
+	unsigned long dir;
+
 	int  (*open)			(struct ioctrl_t *ctrl);
 	void (*close)			(struct ioctrl_t *ctrl);
 	void (*begin)			(struct ioctrl_t *ctrl);

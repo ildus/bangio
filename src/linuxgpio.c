@@ -208,10 +208,10 @@ static int linuxgpio_open(IOCtrl *ctrl)
 				  pin, strerror(errno));
 			return r;
 		}
-		if (i == PIN_MISO)
-			r=linuxgpio_dir_in(pin);
+		if (ctrl->dir & (1 << i))
+			r = linuxgpio_dir_out(pin);
 		else
-			r=linuxgpio_dir_out(pin);
+			r = linuxgpio_dir_in(pin);
 
 		if (r < 0)
 			return r;
@@ -243,6 +243,7 @@ static void linuxgpio_close(IOCtrl *ctrl)
 void linuxgpio_init(IOCtrl *ctrl, enum PINFUNC *pinno)
 {
 	memcpy(ctrl->pinno, pinno, sizeof(enum PINFUNC) * N_PINS);
+	ctrl->dir			= 0;
 	ctrl->cmd			= bitbang_cmd;
 	ctrl->begin			= bitbang_begin;
 	ctrl->end			= bitbang_end;
